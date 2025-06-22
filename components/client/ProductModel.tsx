@@ -50,44 +50,55 @@ export function ProductModel() {
     >
       {/* Base */}
       <div
-        className="model-part absolute w-32 h-8 bg-gradient-to-r from-gray-300 to-gray-400 rounded-full shadow-lg"
+        className="model-part absolute w-32 h-8 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full shadow-lg"
         style={{ bottom: "10%", transformStyle: "preserve-3d" }}
       />
 
       {/* Main Body */}
       <div
-        className="model-part absolute w-24 h-48 bg-gradient-to-b from-white to-gray-100 rounded-2xl shadow-xl border border-gray-200"
+        className="model-part absolute w-24 h-48 bg-gradient-to-b from-white to-gray-200 rounded-2xl shadow-xl border border-gray-200/50"
         style={{ transformStyle: "preserve-3d" }}
       />
 
       {/* Top Vent */}
       <div
-        className="model-part absolute w-20 h-6 bg-gradient-to-r from-gray-800 to-gray-600 rounded-lg"
+        className="model-part absolute w-20 h-6 bg-gradient-to-r from-gray-700 to-gray-500 rounded-lg shadow-inner"
         style={{ top: "15%", transformStyle: "preserve-3d" }}
       />
 
       {/* Side Vents */}
       <div
-        className="model-part absolute w-2 h-32 bg-gradient-to-b from-gray-700 to-gray-500 rounded-full"
+        className="model-part absolute w-1 h-32 bg-gray-300 rounded-full"
         style={{ left: "20%", transformStyle: "preserve-3d" }}
       />
       <div
-        className="model-part absolute w-2 h-32 bg-gradient-to-b from-gray-700 to-gray-500 rounded-full"
+        className="model-part absolute w-1 h-32 bg-gray-300 rounded-full"
         style={{ right: "20%", transformStyle: "preserve-3d" }}
       />
 
       {/* LED Ring */}
       <div
-        className="model-part absolute w-28 h-28 border-4 border-cyan-400 rounded-full animate-pulse"
-        style={{ top: "40%", transformStyle: "preserve-3d" }}
+        className="model-part absolute w-28 h-28 border-4 border-cyan-400/50 rounded-full"
+        style={{
+          top: "40%",
+          transformStyle: "preserve-3d",
+          animation: "pulse-faint 4s ease-in-out infinite",
+        }}
       />
 
       {/* Control Panel */}
       <div
-        className="model-part absolute w-16 h-12 bg-black rounded-lg flex items-center justify-center"
-        style={{ bottom: "30%", transformStyle: "preserve-3d" }}
+        className="model-part absolute w-16 h-12 bg-gray-800/80 backdrop-blur-sm rounded-lg flex items-center justify-center"
+        style={{
+          bottom: "30%",
+          transformStyle: "preserve-3d",
+          boxShadow: "0 0 20px rgba(0, 255, 255, 0.2)",
+        }}
       >
-        <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+        <div
+          className="w-2 h-2 bg-cyan-300 rounded-full"
+          style={{ animation: "pulse-bright 2s ease-in-out infinite" }}
+        />
       </div>
     </div>
   )

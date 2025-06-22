@@ -1,79 +1,68 @@
 import { Card } from "@/components/ui/card"
+import { BarChart, Cog, Droplets, Gauge, ShieldCheck, Wifi } from "lucide-react"
 
 const features = [
   {
-    title: "HEPA H13",
-    description: "Medical-grade filtration",
-    metric: "99.97%",
-    detail: "particle removal",
+    icon: <Droplets className="w-10 h-10 text-cyan-400" />,
+    title: "HEPA H13 Filtration",
+    description: "Captures 99.97% of airborne particles down to 0.1 microns, including viruses and bacteria.",
+    gridClass: "md:col-span-2",
   },
   {
-    title: "Smart Sensors",
-    description: "Real-time monitoring",
-    metric: "0.1μm",
-    detail: "detection precision",
+    icon: <Gauge className="w-10 h-10 text-purple-400" />,
+    title: "Real-Time AQI",
+    description: "Laser sensors monitor air quality, providing instant feedback via the LED ring.",
+    gridClass: "",
   },
   {
-    title: "Whisper Quiet",
-    description: "Ultra-silent operation",
-    metric: "25dB",
-    detail: "sleep mode",
+    icon: <Cog className="w-10 h-10 text-blue-400" />,
+    title: "Whisper-Quiet Motor",
+    description: "Operates at a near-silent 25dB, ensuring a peaceful environment.",
+    gridClass: "",
   },
   {
-    title: "Energy Efficient",
-    description: "Eco-friendly design",
-    metric: "12W",
-    detail: "power consumption",
+    icon: <Wifi className="w-10 h-10 text-green-400" />,
+    title: "Smart Connectivity",
+    description: "Control and monitor your air from anywhere with the Aura mobile app.",
+    gridClass: "",
   },
   {
-    title: "Smart Control",
-    description: "App connectivity",
-    metric: "WiFi 6",
-    detail: "enabled",
+    icon: <ShieldCheck className="w-10 h-10 text-red-400" />,
+    title: "UV-C Sterilization",
+    description: "An internal UV-C lamp neutralizes germs and pathogens trapped in the filter.",
+    gridClass: "",
   },
   {
-    title: "Coverage Area",
-    description: "Large room capacity",
-    metric: "500 sq ft",
-    detail: "effective range",
+    icon: <BarChart className="w-10 h-10 text-yellow-400" />,
+    title: "AI-Powered Auto Mode",
+    description: "Intelligently adjusts fan speed based on your room's air quality and your habits.",
+    gridClass: "md:col-span-2",
   },
 ]
 
 export function FeatureGrid() {
   return (
     <section className="py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-4">
-            Precision
-            <span className="block font-bold text-blue-600">Engineering</span>
+          <h2 className="text-5xl font-light text-gray-900">
+            Intelligent by <span className="font-bold text-blue-600">Design</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Every detail designed for optimal performance and seamless integration into your life.
+          <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
+            Every feature is engineered to provide the purest air with maximum efficiency and minimal effort.
           </p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
+        <div className="grid md:grid-cols-3 gap-8">
+          {features.map((feature, i) => (
             <Card
-              key={feature.title}
-              className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer border-0 bg-white"
+              key={i}
+              className={`p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group ${feature.gridClass}`}
             >
-              <div className="space-y-4">
-                <div className="flex items-start justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    {feature.title}
-                  </h3>
-                  <div className="w-2 h-2 bg-blue-500 rounded-full group-hover:scale-150 transition-transform" />
-                </div>
-
-                <p className="text-gray-600 text-sm">{feature.description}</p>
-
-                <div className="pt-4 border-t border-gray-100">
-                  <div className="text-2xl font-bold text-blue-600 mb-1">{feature.metric}</div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wide">{feature.detail}</div>
-                </div>
+              <div className="flex items-center justify-center h-20 w-20 rounded-full bg-gray-100 mb-6 group-hover:bg-cyan-100 transition-colors duration-300">
+                {feature.icon}
               </div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
+              <p className="text-gray-600">{feature.description}</p>
             </Card>
           ))}
         </div>
