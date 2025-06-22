@@ -1,0 +1,120 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Performance & Accessibility Rules
+
+## Performance Targets
+
+**Core Web Vitals Requirements:**
+- **Lighthouse Performance Score:** 95+ minimum
+- **First Contentful Paint (FCP):** < 1.5 seconds
+- **Largest Contentful Paint (LCP):** < 2.5 seconds
+- **Cumulative Layout Shift (CLS):** < 0.1
+- **First Input Delay (FID):** < 100ms
+
+**Asset Optimization:**
+- Use React 19 `<Asset>` tag for critical resource preloading
+- Implement lazy loading for non-critical images and 3D models
+- Compress video assets while maintaining visual quality
+- Use Next.js 15 Image optimization for all raster images
+
+**Bundle Optimization:**
+- Leverage Next.js 15 compilation optimizations
+- Split client components appropriately to minimize bundle size
+- Use React Server Components for all static content
+- Tree-shake unused dependencies
+
+## Accessibility (A11y) Requirements
+
+**WCAG 2.1 AA Compliance:**
+- Keyboard navigation for all interactive elements
+- Screen reader compatibility with semantic HTML
+- Color contrast ratios meet or exceed 4.5:1
+- Alternative text for all meaningful images and graphics
+
+**Motion & Animation Accessibility:**
+- **Critical:** Implement `prefers-reduced-motion` media query
+- Provide toggle to disable/simplify animations
+- Ensure essential content is accessible without animations
+- Reduce parallax and vestibular motion effects when requested
+
+**Implementation in [Experience.tsx](mdc:app/components/client/Experience.tsx):**
+```typescript
+// Check for reduced motion preference
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (prefersReducedMotion) {
+  // Disable or simplify GSAP animations
+  // Provide alternative static presentation
+}
+```
+
+**Form Accessibility:**
+- Proper labels and ARIA attributes in [WaitlistForm.tsx](mdc:app/components/ui/WaitlistForm.tsx)
+- Error messages announced to screen readers
+- Focus management during form submission
+- Keyboard-accessible form validation
+
+## Browser Compatibility
+
+**Target Browsers:**
+- Chrome/Chromium (latest 2 versions)
+- Firefox (latest 2 versions)
+- Safari (latest 2 versions)
+- Edge (latest 2 versions)
+
+**Feature Support Requirements:**
+- WebGL support for 3D rendering
+- Modern JavaScript features (ES2022+)
+- CSS Grid and Flexbox
+- IntersectionObserver API for scroll detection
+
+## Development Standards
+
+**Code Quality:**
+- TypeScript strict mode enabled
+- ESLint configuration with accessibility rules
+- Prettier for consistent code formatting
+- Component prop validation with TypeScript interfaces
+
+**Error Handling:**
+- Graceful degradation for unsupported features
+- Loading states for async operations
+- Error boundaries for component failures
+- Network failure handling for form submissions
+
+**Testing Strategy:**
+- Visual regression testing for animations
+- Performance testing across device types
+- Accessibility testing with screen readers
+- Cross-browser compatibility testing
+
+## Deployment & Monitoring
+
+**Vercel Deployment:**
+- Use Vercel Edge Functions for form handling
+- Enable Vercel Speed Insights
+- Configure proper caching headers for assets
+- Set up environment variables for production
+
+**Performance Monitoring:**
+- Real User Monitoring (RUM) data collection
+- Core Web Vitals tracking
+- Error logging and monitoring
+- Animation performance metrics
+
+## Mobile Optimization
+
+**Performance Considerations:**
+- Reduced animation complexity on mobile devices
+- Optimized asset sizes for mobile networks
+- Touch-optimized interaction areas
+- Battery usage considerations for intensive animations
+
+**Progressive Enhancement:**
+- Basic experience without JavaScript
+- Enhanced experience with full animation suite
+- Graceful degradation for older mobile browsers
+- Adaptive loading based on device capabilities

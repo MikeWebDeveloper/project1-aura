@@ -1,0 +1,64 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Aura Project Architecture Rules
+
+## Technology Stack (Mid-2025 Cutting-Edge)
+
+**Core Framework & Language:**
+- **Next.js 15** with App Router - Use React Server Components (RSCs) for static content
+- **React 19** - Leverage new features: Actions, `useActionState`, `<Asset>` tag, `useOptimistic`
+- **TypeScript** - Mandatory for all components and utilities
+
+**Animation & 3D:**
+- **GSAP with ScrollTrigger** - Primary animation library for complex timeline-based animations
+- **React Three Fiber & Drei** - For 3D model integration and WebGL rendering
+- **tailwindcss-animate** - For simple CSS-based transitions only
+
+**Styling & State:**
+- **Tailwind CSS** - All styling must use Tailwind classes
+- **Valtio** - Minimal proxy-based state management for shared animation state
+
+**Performance:**
+- Target Lighthouse score: 95+
+- Use React 19 `<Asset>` tag in [layout.tsx](mdc:app/layout.tsx) for critical asset preloading
+- Implement `prefers-reduced-motion` support
+
+## Component Architecture
+
+```
+/app
+├── layout.tsx                // Root layout, font loading, global styles
+├── page.tsx                  // Main page - Server Component by default
+└── /components
+    ├── /client               // Interactive components with "use client"
+    │   ├── Experience.tsx    // Main GSAP/ScrollTrigger orchestrator
+    │   └── Scene3D.tsx       // R3F canvas and 3D model controller
+    ├── /server               // Server-rendered components
+    │   ├── FeatureText.tsx   // Static text content
+    │   └── SpecGridServer.tsx// Bento Grid server component
+    └── /ui                   // Reusable UI components
+        ├── WaitlistForm.tsx  // React 19 Actions showcase
+        └── AnimatedIndicator.tsx
+```
+
+**Component Guidelines:**
+- Server Components by default - only use `"use client"` when necessary
+- Client components: Experience.tsx, Scene3D.tsx, WaitlistForm.tsx, interactive UI
+- Co-locate static content with Server Components
+- Use central [config.ts](mdc:config.ts) for shared configuration
+
+## Asset Management
+
+**Critical Assets (preload in layout.tsx):**
+- Hero video file
+- Primary 3D model (.glb format)
+- Variable font files (Inter or Hubot Sans)
+
+**Asset Loading Strategy:**
+- Use `<Asset>` tag for critical assets
+- Next.js `<Image>` component for all images
+- Place assets in `/public` directory
+- 3D models: .glb format with embedded animations

@@ -1,0 +1,102 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# UI/UX Design Rules
+
+## Design Philosophy
+
+**Premium Product Showcase:**
+- Create "wow" factor through cinematic experience
+- Emphasize visual storytelling over text-heavy content
+- Demonstrate cutting-edge front-end development skills
+- Target design-forward tech companies and creative agencies
+
+## Visual Design Trends (Mid-2025)
+
+**Cinematic Approach:**
+- Full-screen video backgrounds instead of static images
+- Minimal text overlays with high impact
+- Smooth, film-like transitions between sections
+- High-quality, professional-grade assets
+
+**Physicality & Tactile Feel:**
+- UI elements should feel tangible and real
+- Subtle gradients and shadows for depth
+- Physics-based animations that mimic real-world behavior
+- Responsive micro-interactions on hover/touch
+
+**Generative AI Accents:**
+- Small section with AI-generated art/patterns
+- Subtle shifting patterns representing "clean air" effect
+- Tasteful integration, not overwhelming
+
+## Typography & Layout
+
+**Font Requirements:**
+- Variable font (Inter or Hubot Sans recommended)
+- Fine-tuned weight adjustments for optimal hierarchy
+- Highly legible across all device sizes
+- Preload font files using React 19 `<Asset>` tag
+
+**Bento Grid 2.0:**
+- Evolved grid layout for feature showcase
+- Hover-to-expand functionality for grid cells
+- Embedded micro-visualizations within cells
+- Responsive grid that adapts to screen size
+
+**Layout Hierarchy:**
+1. Hero video with minimal text overlay
+2. Scroll-driven animated storytelling sections
+3. Interactive Bento Grid features
+4. Waitlist form with smooth submission
+5. Clean, minimal footer
+
+## Color & Visual Style
+
+**Premium Air Purifier Aesthetic:**
+- Clean, minimal color palette
+- Whites, soft grays, and subtle blues
+- Accent colors for interactive elements
+- High contrast for accessibility compliance
+
+**Visual Effects:**
+- Particle systems for air quality visualization
+- Smooth gradients and subtle shadows
+- Glowing effects for connectivity/smart features
+- Clean, modern iconography
+
+## Responsive Design Requirements
+
+**Mobile-First Approach:**
+- Simplified animation sequences for mobile performance
+- Touch-friendly interaction areas (minimum 44px)
+- Optimized asset loading for mobile networks
+- Maintained visual hierarchy across breakpoints
+
+**Device Adaptation:**
+- Desktop: Full cinematic experience with all animations
+- Tablet: Intermediate experience with key animations
+- Mobile: Streamlined experience focused on core message
+- Consider device capabilities and performance limits
+
+## Interaction Patterns
+
+**Scroll Behavior:**
+- Smooth scroll with momentum (not instant jumps)
+- Clear visual feedback for scroll progress
+- Pinned sections with fluid transitions
+- Scroll-driven animation timing that feels natural
+
+**Micro-Interactions:**
+- Hover states with subtle animation feedback
+- Loading states that feel intentional, not accidental
+- Form validation with inline, helpful feedback
+- Button interactions with satisfying tactile response
+
+**Navigation:**
+- Scroll-based navigation (single page experience)
+- Optional navigation dots/progress indicator
+- Smooth section-to-section transitions
+- Clear call-to-action hierarchy

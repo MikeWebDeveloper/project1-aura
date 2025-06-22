@@ -1,0 +1,81 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Animation & Interaction Rules
+
+## Core Animation Requirements
+
+**Primary Animation Library: GSAP + ScrollTrigger**
+- Use GSAP for all complex, timeline-based animations
+- ScrollTrigger for scroll-driven animations and pinned sections
+- Tailwind CSS animations only for simple hover effects and transitions
+
+## Scroll-Driven Story Sequence
+
+**Scene Structure (implemented in [Experience.tsx](mdc:app/components/client/Experience.tsx)):**
+
+1. **Hero Section:**
+   - Full-screen auto-playing muted video background
+   - Clean headline fades in over video
+   - Animated scroll-down indicator
+
+2. **Scene A - Air Quality Visualization:**
+   - Product image remains pinned/locked during scroll
+   - Particle animation transforms from "polluted" (murky/chaotic) to "clean" (clear/flowing)
+   - Animation progress tied to scroll position
+
+3. **Scene B - Exploded View Scrub:**
+   - 3D model disassembly/reassembly animation
+   - User scroll progress scrubs through pre-rendered animation timeline
+   - Component labels appear as parts are revealed
+   - Managed by [Scene3D.tsx](mdc:app/components/client/Scene3D.tsx)
+
+4. **Scene C - Smart Connectivity:**
+   - Product emits animated pulse
+   - Pulse transforms into smartphone UI graphic
+   - Leads to waitlist form with React 19 Actions
+
+## 3D Animation Implementation
+
+**Model Requirements:**
+- Use .glb format with embedded animations
+- Export from Blender or similar 3D tool
+- Animation mixer controlled via GSAP timeline
+- Smooth scrubbing capability essential
+
+**React Three Fiber Integration:**
+```typescript
+// In Scene3D.tsx
+import { Canvas } from '@react-three/fiber'
+import { useGLTF, useAnimations } from '@react-three/drei'
+// GSAP controls animation mixer progress based on scroll
+```
+
+## Animation Performance Guidelines
+
+**Optimization Rules:**
+- Use `will-change` CSS property sparingly and remove after animation
+- Prefer `transform` and `opacity` changes over layout-affecting properties
+- Implement animation recycling for particle systems
+- Use `requestAnimationFrame` for custom animations
+- Respect `prefers-reduced-motion` - disable or simplify animations
+
+**GSAP Best Practices:**
+- Create master timeline in Experience.tsx
+- Use `ScrollTrigger.refresh()` after dynamic content changes
+- Properly cleanup animations in component unmount
+- Use GSAP's `fromTo` methods for explicit animation states
+
+## Interactive Elements
+
+**Hover Interactions:**
+- Bento Grid cells expand/reveal details on hover
+- Subtle physics-based animations for tactile feel
+- Maintain 60fps performance during interactions
+
+**Form Interactions:**
+- Use React 19 `useActionState` for seamless submissions
+- Optimistic UI updates with `useOptimistic`
+- No page reloads for waitlist form submission
