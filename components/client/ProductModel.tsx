@@ -1,105 +1,108 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { Canvas } from "@react-three/fiber"
+import { useGLTF, OrbitControls, Environment } from "@react-three/drei"
+import { useEffect, useRef, useState } from "react"
+import { Group, Mesh } from "three"
 
-export function ProductModel() {
-  const containerRef = useRef<HTMLDivElement>(null)
+function AirPurifierModel() {
+  const group = useRef<Group>(null)
+  const { scene } = useGLTF("/air_purifier.glb")
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    // This would normally integrate with React Three Fiber
-    // For now, we'll create a CSS-based 3D effect that responds to scroll
-    const updateModel = () => {
-      const progress = Number.parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue("--model-progress") || "0",
+    const updateProgress = () => {
+      const modelProgress = Number.parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--model-progress") || "0"
       )
-
-      if (containerRef.current) {
-        const elements = containerRef.current.querySelectorAll(".model-part")
-        elements.forEach((el, index) => {
-          const element = el as HTMLElement
-          const delay = index * 0.1
-          const partProgress = Math.max(0, Math.min(1, (progress - delay) / (1 - delay)))
-
-          element.style.transform = `
-            translateZ(${partProgress * 100}px) 
-            rotateY(${partProgress * 360}deg)
-            scale(${1 + partProgress * 0.2})
-          `
-          element.style.opacity = (1 - partProgress * 0.3).toString()
-        })
-      }
+      setProgress(modelProgress)
     }
 
-    const observer = new MutationObserver(updateModel)
+    // Initial update
+    updateProgress()
+
+    // Listen for changes to the CSS custom property
+    const observer = new MutationObserver(updateProgress)
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["style"],
     })
 
-    // Initial update
-    updateModel()
-
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    if (!group.current) return
+
+    // Animate the entire model rotation and scale based on progress
+    group.current.rotation.y = progress * Math.PI * 2
+    group.current.scale.setScalar(0.8 + progress * 0.4)
+
+    // Create exploded view effect by moving parts apart
+    const children = group.current.children
+    children.forEach((child, index) => {
+      if (child instanceof Group || child instanceof Mesh) {
+        const explosionFactor = progress * 2
+        const angle = (index / children.length) * Math.PI * 2
+        
+        // Move parts outward in a radial pattern
+        child.position.x = Math.cos(angle) * explosionFactor
+        child.position.y = Math.sin(angle * 0.5) * explosionFactor
+        child.position.z = Math.sin(angle) * explosionFactor
+        
+        // Rotate individual parts
+        child.rotation.x = progress * Math.PI * 0.5
+        child.rotation.z = progress * Math.PI * 0.3
+      }
+    })
+  }, [progress])
+
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full h-full flex items-center justify-center"
-      style={{ perspective: "1000px" }}
-    >
-      {/* Base */}
-      <div
-        className="model-part absolute w-32 h-8 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full shadow-lg"
-        style={{ bottom: "10%", transformStyle: "preserve-3d" }}
-      />
+    <group ref={group} dispose={null} position={[0, 0, 0]}>
+      <primitive object={scene} />
+    </group>
+  )
+}
 
-      {/* Main Body */}
-      <div
-        className="model-part absolute w-24 h-48 bg-gradient-to-b from-white to-gray-200 rounded-2xl shadow-xl border border-gray-200/50"
-        style={{ transformStyle: "preserve-3d" }}
-      />
-
-      {/* Top Vent */}
-      <div
-        className="model-part absolute w-20 h-6 bg-gradient-to-r from-gray-700 to-gray-500 rounded-lg shadow-inner"
-        style={{ top: "15%", transformStyle: "preserve-3d" }}
-      />
-
-      {/* Side Vents */}
-      <div
-        className="model-part absolute w-1 h-32 bg-gray-300 rounded-full"
-        style={{ left: "20%", transformStyle: "preserve-3d" }}
-      />
-      <div
-        className="model-part absolute w-1 h-32 bg-gray-300 rounded-full"
-        style={{ right: "20%", transformStyle: "preserve-3d" }}
-      />
-
-      {/* LED Ring */}
-      <div
-        className="model-part absolute w-28 h-28 border-4 border-cyan-400/50 rounded-full"
-        style={{
-          top: "40%",
-          transformStyle: "preserve-3d",
-          animation: "pulse-faint 4s ease-in-out infinite",
-        }}
-      />
-
-      {/* Control Panel */}
-      <div
-        className="model-part absolute w-16 h-12 bg-gray-800/80 backdrop-blur-sm rounded-lg flex items-center justify-center"
-        style={{
-          bottom: "30%",
-          transformStyle: "preserve-3d",
-          boxShadow: "0 0 20px rgba(0, 255, 255, 0.2)",
-        }}
+export function ProductModel() {
+  return (
+    <div className="relative w-full h-full">
+      <Canvas
+        camera={{ position: [0, 0, 5], fov: 50 }}
+        className="w-full h-full"
       >
-        <div
-          className="w-2 h-2 bg-cyan-300 rounded-full"
-          style={{ animation: "pulse-bright 2s ease-in-out infinite" }}
+        <ambientLight intensity={0.5} />
+        <spotLight 
+          position={[10, 10, 10]} 
+          angle={0.15} 
+          penumbra={1} 
+          intensity={1}
+          castShadow
         />
+        <pointLight position={[-10, -10, -10]} intensity={0.5} />
+        
+        {/* Environment for realistic reflections */}
+        <Environment preset="studio" />
+        
+        {/* The 3D Model */}
+        <AirPurifierModel />
+        
+        {/* Optional: Allow user to rotate the model manually */}
+        <OrbitControls 
+          enablePan={false}
+          enableZoom={false}
+          enableRotate={true}
+          rotateSpeed={0.5}
+        />
+      </Canvas>
+      
+      {/* Loading fallback */}
+      <div className="absolute inset-0 flex items-center justify-center bg-gray-100 opacity-50 pointer-events-none">
+        <div className="text-gray-600">Loading 3D Model...</div>
       </div>
     </div>
   )
 }
+
+// Preload the model for better performance
+useGLTF.preload("/air_purifier.glb")
